@@ -1,0 +1,27 @@
+# Build & Test Output
+build/
+dist/
+out/
+lib/
+coverage/
+docsTemp/
+
+.swc/
+stats.json
+
+# Classic node deps
+node_modules/
+
+.DS_Store
+
+# Yarn v2 Gitignores - https://yarnpkg.com/getting-started/qa/#which-files-should-be-gitignored
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# dotenv
+.env.local
