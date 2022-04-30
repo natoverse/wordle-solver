@@ -1,23 +1,63 @@
-import { Spinner } from '@fluentui/react'
+import { DefaultButton, Spinner, TextField } from '@fluentui/react'
 import type { FC } from 'react'
 import { memo, Suspense } from 'react'
 import { RecoilRoot } from 'recoil'
 import styled from 'styled-components'
 
+import { WordBoxes } from '../components/WordBoxes/WordBoxes.js'
 import { WordDisplay } from '../components/WordDisplay/WordDisplay.js'
-import { useInitData } from './App.hooks.js'
+import { useData, useInputs, useMarkedResults } from './App.hooks.js'
+import { Header } from './Header.js'
 import { StyleContext } from './StyleContext.js'
 
 export const App: FC = memo(function App() {
-	const { guesses, answers } = useInitData()
+	const { guesses, answers } = useData()
+	const { solution, onSolutionChange, guess, onGuessChange } = useInputs()
+
+	const { doTest, tries, remaining } = useMarkedResults(
+		guess,
+		solution,
+		guesses,
+	)
+
 	return (
 		<RecoilRoot>
 			<Suspense fallback={<Spinner />}>
 				<StyleContext>
-					<Header>Wordle Solver!</Header>
+					<Header />
+
 					<Main>
-						<WordDisplay title={'Valid guesses'} words={guesses} />
-						<WordDisplay title={'Possible answers'} words={answers} />
+						<Stacked>
+							<TextField
+								label="Solution"
+								value={solution}
+								onChange={(_e, val) => onSolutionChange(val)}
+							/>
+							<TextField
+								label="Guess"
+								value={guess}
+								onChange={(_e, val) => onGuessChange(val)}
+							/>
+							<DefaultButton onClick={doTest}>Check</DefaultButton>
+							{tries.map((t, idx) => (
+								<WordBoxes key={idx} word={t} />
+							))}
+						</Stacked>
+						<WordDisplay
+							title={'Possible solutions'}
+							words={answers}
+							onWordClick={onSolutionChange}
+						/>
+						<WordDisplay
+							title={'Valid guesses'}
+							words={guesses}
+							onWordClick={onGuessChange}
+						/>
+						<WordDisplay
+							title={'Remaining guesses'}
+							words={remaining}
+							onWordClick={onGuessChange}
+						/>
 					</Main>
 				</StyleContext>
 			</Suspense>
@@ -25,23 +65,15 @@ export const App: FC = memo(function App() {
 	)
 })
 
-const Header = styled.h1`
-margin: 0;
-padding: 10px;
-	width: 100%;
-	height: 40px;
-	color: ${({ theme }) => theme.application().highContrast().hex()};
-	text-shadow: ${({ theme }) => {
-		const shadow = theme.application().lowContrast().hex()
-		return `1px 0 0 ${shadow},0 1px 0 ${shadow},-1px 0 0 ${shadow},0 -1px 0 ${shadow};`
-	}
-} 
-	background: ${({ theme }) => theme.application().accent().hex()};
-	border-bottom: 1px solid ${({ theme }) => theme.application().lowContrast().hex()};
-`
-
 const Main = styled.div`
 	padding: 20px;
 	display: flex;
+	gap: 12px;
+`
+
+const Stacked = styled.div`
+	display: flex;
+	flex-direction: column;
 	gap: 10px;
+	width: 188px;
 `

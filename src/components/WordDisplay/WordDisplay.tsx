@@ -6,13 +6,20 @@ import { WordList } from '../WordList/WordList'
 export interface WordDisplayProps {
 	title: string
 	words?: string[]
+	onWordClick?: (word: string) => void
 }
-export const WordDisplay: FC<WordDisplayProps> = ({ title, words }) => {
+export const WordDisplay: FC<WordDisplayProps> = ({
+	title,
+	words,
+	onWordClick,
+}) => {
 	return (
 		<Container>
-			<Header>{title} ({words?.length})</Header>
+			<Header>
+				{title} ({words?.length})
+			</Header>
 			<List>
-				<WordList words={words} />
+				<WordList words={words} onClick={onWordClick} />
 			</List>
 		</Container>
 	)
@@ -20,7 +27,7 @@ export const WordDisplay: FC<WordDisplayProps> = ({ title, words }) => {
 
 const Container = styled.div`
 	height: 600px;
-	width: 200px;
+	width: 300px;
 	border: 1px solid ${({ theme }) => theme.application().border().hex()};
 `
 

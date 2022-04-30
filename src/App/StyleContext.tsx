@@ -34,7 +34,7 @@ const params = {
 	nominalHueStep: 10,
 }
 
-export function useTheming() {
+function useTheming() {
 	const theme = useMemo(
 		() =>
 			loadFromSpec(
