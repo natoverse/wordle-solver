@@ -39,5 +39,4 @@ const Header = styled.div`
 const List = styled.div`
 	overflow-y: scroll;
 	height: 94%;
-	padding: 4px;
 `
