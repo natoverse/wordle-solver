@@ -7,11 +7,15 @@ export interface WordBoxesProps {
 	word?: MarkedWord
 }
 
-const empty = new Array(5).fill({ letter: '', mark: Mark.Unset })
+const empty = {
+	word: '',
+	letters: new Array(5).fill({ letter: '', mark: Mark.Unset })
+}
+
 export const WordBoxes: FC<WordBoxesProps> = ({ word = empty }) => {
 	return (
 		<Container>
-			{word.map((letter, index) => {
+			{word.letters.map((letter, index) => {
 				return (
 					<Letter key={`${letter}-${index}`} mark={letter.mark}>
 						{letter.letter}

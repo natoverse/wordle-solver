@@ -11,7 +11,9 @@ export function mark(guess: string, solution: string): MarkedWord {
 	const guessLetters = guess.split('')
 	const solutionLetters = solution.split('')
 
-	const result: MarkedWord = guessLetters.map((guessLetter, guessIndex) => {
+	const result: MarkedWord = {
+		word: guess,
+		letters: guessLetters.map((guessLetter, guessIndex) => {
 		let mark = Mark.None
 
 		// same letter, same position
@@ -40,6 +42,7 @@ export function mark(guess: string, solution: string): MarkedWord {
 			mark,
 		}
 	})
+}
 
 	return result
 }

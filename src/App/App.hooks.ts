@@ -83,15 +83,19 @@ export function useMarkedResults(
 	const doTest = useCallback(() => {
 		if (guess && solution) {
 			console.time('mark')
-			const m = mark(guess, solution)
+			const marked = mark(guess, solution)
 			console.timeEnd('mark')
-			setTries(prev => [...prev, m])
+			setTries(prev => [...prev, marked])
 			console.time('filter')
-			const r = filter(m, guesses)
+			// this only returns words that are valid guesses given the current input
+			const filtered = filter(marked, guesses)
 			console.timeEnd('filter')
-			setRemaining(r)
+			// filter once more to eliminate any words that have already been guess
+			const tSet = new Set(tries.map(t => t.word))
+			const rem = filtered.filter(w => !tSet.has(w))
+			setRemaining(rem)
 		}
-	}, [solution, guess, guesses])
+	}, [solution, guess, guesses, tries])
 
 	return {
 		doTest,

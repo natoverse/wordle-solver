@@ -9,4 +9,7 @@ export interface MarkedLetter {
 	mark: Mark
 }
 
-export type MarkedWord = MarkedLetter[]
+export interface MarkedWord {
+	word: string
+	letters: MarkedLetter[]
+}

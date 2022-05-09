@@ -12,7 +12,7 @@ export function validate(marked: MarkedWord, word: string): boolean {
 	const wordLetters = word.split('')
 
 	// first only allow those words with Confirmed position matches
-	let maybe = marked.every((mark, index) => {
+	let maybe = marked.letters.every((mark, index) => {
 		if (mark.mark === Mark.Confirmed) {
 			return wordLetters[index] === mark.letter
 		}
@@ -22,7 +22,7 @@ export function validate(marked: MarkedWord, word: string): boolean {
 
 	// still ok? check the Elsewhere letters
 	if (maybe) {
-		maybe = marked.every((mark, index) => {
+		maybe = marked.letters.every((mark, index) => {
 			if (mark.mark === Mark.Elsewhere) {
 				for (let wordIndex = 0; wordIndex < wordLetters.length; wordIndex++) {
 					// ignore the matching index - we already confirmed it is ok
@@ -40,7 +40,7 @@ export function validate(marked: MarkedWord, word: string): boolean {
 
     // finally, cull any words that contain None letters
 	if (maybe) {
-		maybe = marked.every((mark, index) => {
+		maybe = marked.letters.every((mark, index) => {
 			if (mark.mark === Mark.None) {
 				// if any letter matches the none, bail
 				for (let wordIndex = 0; wordIndex < wordLetters.length; wordIndex++) {
