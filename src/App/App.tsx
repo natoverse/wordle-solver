@@ -11,8 +11,8 @@ import { Header } from './Header.js'
 import { StyleContext } from './StyleContext.js'
 
 export const App: FC = memo(function App() {
-	const { guesses, answers } = useData()
-	const { solution, onSolutionChange, guess, onGuessChange } = useInputs()
+	const { guesses, answers, yesterday } = useData()
+	const { solution, onSolutionChange, guess, onGuessChange } = useInputs(yesterday)
 
 	const { doTest, tries, remaining } = useMarkedResults(
 		guess,
