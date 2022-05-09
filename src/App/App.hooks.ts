@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { filter } from '../engine/filter'
 import { mark } from '../engine/mark'
+import { start } from '../query'
 import type { MarkedWord } from '../types'
 export function useData(): {
 	guesses: string[]
@@ -46,7 +47,7 @@ export function useInputs(answers: string[]): {
 	onDateChange: (date: Date) => void
 } {
 	const [solution, onSolutionChange] = useState<string | undefined>('')
-	const [guess, onGuessChange] = useState<string | undefined>('')
+	const [guess, onGuessChange] = useState<string | undefined>(start())
 
 	const [date, onDateChange] = useState<Date>(startOfYesterday())
 
