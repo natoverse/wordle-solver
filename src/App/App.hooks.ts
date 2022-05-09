@@ -6,6 +6,11 @@ import { filter } from '../engine/filter'
 import { mark } from '../engine/mark'
 import { start } from '../query'
 import type { MarkedWord, Solver } from '../types'
+
+/**
+ * Loads all required word data files.
+ * @returns
+ */
 export function useData(): {
 	guesses: string[]
 	answers: string[]
@@ -30,14 +35,10 @@ export function useData(): {
 }
 
 /**
- * Compute the index for a solution based on the selected date.
+ * Use the user inputs for the solution to try against and the current guess
+ * @param answers
  * @returns
  */
-function dateIndex(date: Date) {
-	const first = new Date('2021-06-16')
-	const diff = differenceInDays(date, first)
-	return diff
-}
 export function useInputs(answers: string[]): {
 	solution: string
 	onSolutionChange: (update: string) => void
@@ -53,7 +54,8 @@ export function useInputs(answers: string[]): {
 
 	// default to yesterday, and set that as the starting solution
 	useEffect(() => {
-		const index = dateIndex(date)
+		const first = new Date('2021-06-16')
+		const index = differenceInDays(date, first)
 		onSolutionChange(answers[index])
 	}, [answers, date, onSolutionChange])
 

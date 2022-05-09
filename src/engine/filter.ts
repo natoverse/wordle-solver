@@ -14,6 +14,8 @@ export function filter(
 	previous?: MarkedWord[],
 ): string[] {
 	const filtered = list.filter(word => validate(marked, word))
+	// TODO: if a previous guess had a letter in an Elsewhere position,
+	// new guesses should not allow reusing that position
 	if (previous) {
 		const pSet = new Set(previous.map(p => p.word))
 		return filtered.filter(f => !pSet.has(f))
