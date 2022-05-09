@@ -1,30 +1,38 @@
+import { DetailsList } from '@fluentui/react'
+import { SelectionMode } from '@fluentui/utilities'
 import type { FC} from 'react';
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo , useState } from 'react'
 import styled from 'styled-components'
 
 export interface WordListProps {
-	words?: string[]
+	words: string[]
 	onClick?: (word: string) => void
 }
 export const WordList: FC<WordListProps> = ({ words, onClick }) => {
-	const [hovered, setHovered] = useState<string | undefined>()
-	const handleHover = useCallback(
-		(word?: string) => setHovered(word),
-		[setHovered],
+	const items = useMemo(
+		() =>
+			words.map(word => ({
+				word,
+			})),
+		[words],
 	)
 	return (
 		<Container>
-			{words?.map(word => (
-				<Word
-					key={word}
-					hovered={hovered === word}
-					onClick={() => onClick?.(word)}
-					onMouseEnter={() => handleHover(word)}
-					onMouseLeave={() => handleHover()}
-				>
-					{word}
-				</Word>
-			))}
+			<DetailsList
+				compact
+				isHeaderVisible={false}
+				selectionMode={SelectionMode.single}
+				items={items}
+				columns={[
+					{
+						key: 'word',
+						name: 'Word',
+						fieldName: 'word',
+						minWidth: 100,
+					},
+				]}
+				onActiveItemChanged={item => onClick?.(item.word)}
+			/>
 		</Container>
 	)
 }

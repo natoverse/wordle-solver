@@ -11,35 +11,35 @@ export function mark(guess: string, solution: string): MarkedWord {
 	const guessLetters = guess.split('')
 	const solutionLetters = solution.split('')
 
-	const result: MarkedWord = guessLetters.map(
-		(guessLetter, guessolutionIndexndex) => {
-			let mark = Mark.None
+	const result: MarkedWord = guessLetters.map((guessLetter, guessIndex) => {
+		let mark = Mark.None
 
-			// same letter, same posolutionIndextion
-			if (guessLetter === solutionLetters[guessolutionIndexndex]) {
-				mark = Mark.Confirmed
-			} else {
-				// find any other posolutionIndextion for the letter
-				for (
-					let solutionIndex = 0;
-					solutionIndex < solutionLetters.length;
-					solutionIndex++
-				) {
-					if (solutionIndex !== guessolutionIndexndex) {
-						if (guessLetter === solutionLetters[solutionIndex]) {
-							mark = Mark.Elsewhere
-							break
-						}
+		// same letter, same position
+		if (guessLetter === solutionLetters[guessIndex]) {
+			mark = Mark.Confirmed
+		} else {
+			// find any other position for the letter
+			// TODO: in the actual wordle implementation, once a letter is matched,
+			// if it is guessed elsewhere it will be marked as wrong, not elsewhere
+			for (
+				let solutionIndex = 0;
+				solutionIndex < solutionLetters.length;
+				solutionIndex++
+			) {
+				if (solutionIndex !== guessIndex) {
+					if (guessLetter === solutionLetters[solutionIndex]) {
+						mark = Mark.Elsewhere
+						break
 					}
 				}
 			}
+		}
 
-			return {
-				letter: guessLetter,
-				mark,
-			}
-		},
-	)
+		return {
+			letter: guessLetter,
+			mark,
+		}
+	})
 
 	return result
 }

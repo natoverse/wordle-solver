@@ -1,19 +1,17 @@
 import { csv } from 'd3-fetch'
+import { differenceInDays, startOfYesterday } from 'date-fns'
 import { useCallback, useEffect, useState } from 'react'
-import { differenceInDays } from 'date-fns'
+
 import { filter } from '../engine/filter'
 import { mark } from '../engine/mark'
 import type { MarkedWord } from '../types'
 export function useData(): {
 	guesses: string[]
-	answers: string[],
-	yesterday: string,
-	today: string
+	answers: string[]
 } {
 	const [guesses, setGuesses] = useState<string[]>([])
 	const [answers, setAnswers] = useState<string[]>([])
-	const [yesterday, setYesterday] = useState<string>('')
-	const [today, setToday] = useState<string>('')
+
 	useEffect(() => {
 		const f = async () => {
 			const g = await csv('guesses.csv')
@@ -21,49 +19,50 @@ export function useData(): {
 
 			const a = await csv('answers.csv')
 			setAnswers(a.columns)
-
-			const tidx = todaysIndex()
-			
-			const y = a.columns[tidx - 1]
-			const t = a.columns[tidx]
-
-			setYesterday(y)
-			setToday(t)
 		}
 		f()
 	}, [])
 	return {
 		guesses,
 		answers,
-		yesterday,
-		today
 	}
 }
 
-function todaysIndex() {
+/**
+ * Compute the index for a solution based on the selected date.
+ * @returns
+ */
+function dateIndex(date: Date) {
 	const first = new Date('2021-06-16')
-	const today = new Date()
-	const diff = differenceInDays(today, first)
-	return diff - 1 // zero-based index
+	const diff = differenceInDays(date, first)
+	return diff
 }
-export function useInputs(yesterday: string): {
+export function useInputs(answers: string[]): {
 	solution?: string
 	onSolutionChange: (update?: string) => void
 	guess?: string
 	onGuessChange: (update?: string) => void
+	date: Date
+	onDateChange: (date: Date) => void
 } {
 	const [solution, onSolutionChange] = useState<string | undefined>('')
 	const [guess, onGuessChange] = useState<string | undefined>('')
 
+	const [date, onDateChange] = useState<Date>(startOfYesterday())
+
+	// default to yesterday, and set that as the starting solution
 	useEffect(() => {
-		onSolutionChange(yesterday)
-	}, [yesterday, onSolutionChange])
-	
+		const index = dateIndex(date)
+		onSolutionChange(answers[index])
+	}, [answers, date, onSolutionChange])
+
 	return {
 		solution,
 		onSolutionChange,
 		guess,
 		onGuessChange,
+		date,
+		onDateChange,
 	}
 }
 

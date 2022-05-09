@@ -7,12 +7,20 @@ import styled from 'styled-components'
 import { WordBoxes } from '../components/WordBoxes/WordBoxes.js'
 import { WordDisplay } from '../components/WordDisplay/WordDisplay.js'
 import { useData, useInputs, useMarkedResults } from './App.hooks.js'
-import { Header } from './Header.js'
+import { DayPicker } from './components/DayPicker.js'
+import { Header } from './components/Header.js'
 import { StyleContext } from './StyleContext.js'
 
 export const App: FC = memo(function App() {
-	const { guesses, answers, yesterday } = useData()
-	const { solution, onSolutionChange, guess, onGuessChange } = useInputs(yesterday)
+	const { guesses, answers } = useData()
+	const {
+		solution,
+		onSolutionChange,
+		guess,
+		onGuessChange,
+		date,
+		onDateChange,
+	} = useInputs(answers)
 
 	const { doTest, tries, remaining } = useMarkedResults(
 		guess,
@@ -28,11 +36,14 @@ export const App: FC = memo(function App() {
 
 					<Main>
 						<Stacked>
-							<TextField
-								label="Solution"
-								value={solution}
-								onChange={(_e, val) => onSolutionChange(val)}
-							/>
+							<Stack>
+								<TextField
+									label="Solution"
+									value={solution}
+									onChange={(_e, val) => onSolutionChange(val)}
+								/>
+								<DayPicker current={date} onChange={onDateChange} />
+							</Stack>
 							<TextField
 								label="Guess"
 								value={guess}
@@ -75,5 +86,7 @@ const Stacked = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	width: 188px;
+	width: 200px;
 `
+
+const Stack = styled.div``

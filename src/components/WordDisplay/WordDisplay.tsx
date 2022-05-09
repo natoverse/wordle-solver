@@ -5,7 +5,7 @@ import { WordList } from '../WordList/WordList'
 
 export interface WordDisplayProps {
 	title: string
-	words?: string[]
+	words: string[]
 	onWordClick?: (word: string) => void
 }
 export const WordDisplay: FC<WordDisplayProps> = ({
@@ -27,7 +27,7 @@ export const WordDisplay: FC<WordDisplayProps> = ({
 
 const Container = styled.div`
 	height: 600px;
-	width: 300px;
+	width: 200px;
 	border: 1px solid ${({ theme }) => theme.application().border().hex()};
 `
 
