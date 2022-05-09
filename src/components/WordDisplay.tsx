@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import styled from 'styled-components'
 
-import { WordList } from '../WordList/WordList'
+import { WordList } from './WordList'
 
 export interface WordDisplayProps {
 	title: string

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { filter } from '../engine/filter'
 import { mark } from '../engine/mark'
 import { start } from '../query'
-import type { MarkedWord } from '../types'
+import type { MarkedWord, Solver } from '../types'
 export function useData(): {
 	guesses: string[]
 	answers: string[]
@@ -39,15 +39,15 @@ function dateIndex(date: Date) {
 	return diff
 }
 export function useInputs(answers: string[]): {
-	solution?: string
-	onSolutionChange: (update?: string) => void
-	guess?: string
-	onGuessChange: (update?: string) => void
+	solution: string
+	onSolutionChange: (update: string) => void
+	guess: string
+	onGuessChange: (update: string) => void
 	date: Date
 	onDateChange: (date: Date) => void
 } {
-	const [solution, onSolutionChange] = useState<string | undefined>('')
-	const [guess, onGuessChange] = useState<string | undefined>(start())
+	const [solution, onSolutionChange] = useState<string>('')
+	const [guess, onGuessChange] = useState<string>(start())
 
 	const [date, onDateChange] = useState<Date>(startOfYesterday())
 
@@ -68,13 +68,15 @@ export function useInputs(answers: string[]): {
 }
 
 export function useMarkedResults(
-	guess: string | undefined,
-	solution: string | undefined,
+	guess: string,
+	solution: string,
+	answers: string[],
 	guesses: string[],
 ): {
 	remaining: string[]
 	tries: MarkedWord[]
 	doTest: () => void
+	doSolver: (solver: Solver) => void
 } {
 	const [remaining, setRemaining] = useState<string[]>([])
 	const [tries, setTries] = useState<MarkedWord[]>([])
@@ -83,24 +85,26 @@ export function useMarkedResults(
 
 	const doTest = useCallback(() => {
 		if (guess && solution) {
-			console.time('mark')
 			const marked = mark(guess, solution)
-			console.timeEnd('mark')
 			setTries(prev => [...prev, marked])
-			console.time('filter')
 			// this only returns words that are valid guesses given the current input
-			const filtered = filter(marked, guesses)
-			console.timeEnd('filter')
-			// filter once more to eliminate any words that have already been guess
-			const tSet = new Set(tries.map(t => t.word))
-			const rem = filtered.filter(w => !tSet.has(w))
-			setRemaining(rem)
+			const filtered = filter(marked, guesses, tries)
+			setRemaining(filtered)
 		}
 	}, [solution, guess, guesses, tries])
+
+	const doSolver = useCallback(
+		(solver: Solver) => {
+			const results = solver(answers, solution, guess)
+			setTries(results)
+		},
+		[answers, solution, guess, setTries],
+	)
 
 	return {
 		doTest,
 		tries,
 		remaining,
+		doSolver,
 	}
 }

@@ -1,4 +1,4 @@
-import type { IColumn } from '@fluentui/react';
+import type { IColumn } from '@fluentui/react'
 import { DetailsList } from '@fluentui/react'
 import { SelectionMode } from '@fluentui/utilities'
 import type { FC } from 'react'

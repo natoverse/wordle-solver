@@ -13,3 +13,9 @@ export interface MarkedWord {
 	word: string
 	letters: MarkedLetter[]
 }
+
+export type Solver = (
+	answers: string[],
+	solution: string,
+	start: string,
+) => MarkedWord[]

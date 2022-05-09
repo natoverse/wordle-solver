@@ -4,8 +4,9 @@ import { memo, Suspense } from 'react'
 import { RecoilRoot } from 'recoil'
 import styled from 'styled-components'
 
-import { WordBoxes } from '../components/WordBoxes/WordBoxes.js'
-import { WordDisplay } from '../components/WordDisplay/WordDisplay.js'
+import { Solvers } from '../components/Solvers.js'
+import { WordBoxes } from '../components/WordBoxes.js'
+import { WordDisplay } from '../components/WordDisplay.js'
 import { useData, useInputs, useMarkedResults } from './App.hooks.js'
 import { DayPicker } from './components/DayPicker.js'
 import { Header } from './components/Header.js'
@@ -22,9 +23,10 @@ export const App: FC = memo(function App() {
 		onDateChange,
 	} = useInputs(answers)
 
-	const { doTest, tries, remaining } = useMarkedResults(
+	const { doTest, tries, remaining, doSolver } = useMarkedResults(
 		guess,
 		solution,
+		answers,
 		guesses,
 	)
 
@@ -40,14 +42,14 @@ export const App: FC = memo(function App() {
 								<TextField
 									label="Solution"
 									value={solution}
-									onChange={(_e, val) => onSolutionChange(val)}
+									onChange={(_e, val) => onSolutionChange(val!)}
 								/>
 								<DayPicker current={date} onChange={onDateChange} />
 							</Stack>
 							<TextField
 								label="Guess"
 								value={guess}
-								onChange={(_e, val) => onGuessChange(val)}
+								onChange={(_e, val) => onGuessChange(val!)}
 							/>
 							<DefaultButton onClick={doTest}>Check</DefaultButton>
 							{tries.map((t, idx) => (
@@ -69,6 +71,10 @@ export const App: FC = memo(function App() {
 							words={remaining}
 							onWordClick={onGuessChange}
 						/>
+						<Stack>
+							Solve it:
+							<Solvers onClick={doSolver} />
+						</Stack>
 					</Main>
 				</StyleContext>
 			</Suspense>
@@ -79,14 +85,14 @@ export const App: FC = memo(function App() {
 const Main = styled.div`
 	padding: 20px;
 	display: flex;
-	gap: 12px;
+	gap: 20px;
 `
 
 const Stacked = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	width: 200px;
+	width: 188px;
 `
 
 const Stack = styled.div``

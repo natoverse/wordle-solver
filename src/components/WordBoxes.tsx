@@ -1,15 +1,15 @@
 import type { FC } from 'react'
 import styled from 'styled-components'
 
-import type { MarkedWord } from '../../types.js'
-import { Mark } from '../../types.js'
+import type { MarkedWord } from '../types.js'
+import { Mark } from '../types.js'
 export interface WordBoxesProps {
 	word?: MarkedWord
 }
 
 const empty = {
 	word: '',
-	letters: new Array(5).fill({ letter: '', mark: Mark.Unset })
+	letters: new Array(5).fill({ letter: '', mark: Mark.Unset }),
 }
 
 export const WordBoxes: FC<WordBoxesProps> = ({ word = empty }) => {
