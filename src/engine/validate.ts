@@ -30,6 +30,8 @@ export function validate(marked: MarkedWord, word: string): boolean {
 						if (wordLetters[wordIndex] === mark.letter) {
 							return true
 						}
+					} else {
+						return true
 					}
 				}
 				return false
@@ -38,7 +40,7 @@ export function validate(marked: MarkedWord, word: string): boolean {
 		})
 	}
 
-    // finally, cull any words that contain None letters
+	// finally, cull any words that contain None letters
 	if (maybe) {
 		maybe = marked.letters.every((mark, index) => {
 			if (mark.mark === Mark.None) {
@@ -52,6 +54,6 @@ export function validate(marked: MarkedWord, word: string): boolean {
 			return true
 		})
 	}
-	
+
 	return maybe
 }

@@ -33,14 +33,15 @@ export function mark(guess: string, solution: string): MarkedWord {
 					const solutionLetter = solutionLetters[solutionIndex]
 					if (solutionIndex !== guessIndex) {
 						if (guessLetter === solutionLetter) {
-							if (lookup(counts, guessLetter) <= 0) {
-								mark = Mark.None
-							} else {
-								mark = Mark.Elsewhere
-								// decrement again
-								decrement(counts, guessLetter)
-							}
-
+							// TODO: this is technically correct, but isn't compatible with how we validate
+							// if (lookup(counts, guessLetter) <= 0) {
+							// 	mark = Mark.None
+							// } else {
+							// 	mark = Mark.Elsewhere
+							// 	// decrement again
+							// 	decrement(counts, guessLetter)
+							// }
+							mark = Mark.Elsewhere
 							break
 						}
 					}

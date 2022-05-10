@@ -13,8 +13,8 @@ import { mark } from '../mark'
 export const first: Solver = (answers, solution, start) => {
 	let matched = false
 	let guess = start || answers[0]
+	let remaining = answers
 	const tries: MarkedWord[] = []
-
 	while (!matched) {
 		// check the actual guess and set the matched flag
 		matched = guess === solution
@@ -24,7 +24,7 @@ export const first: Solver = (answers, solution, start) => {
 		tries.push(marked)
 
 		// get a new list of allowed guesses, then choose the next guess
-		const remaining = filter(marked, answers, tries)
+		remaining = filter(remaining, marked, tries)
 		guess = remaining[0]
 	}
 

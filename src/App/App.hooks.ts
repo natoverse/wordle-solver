@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { filter } from '../engine/filter'
 import { mark } from '../engine/mark'
-import { start } from '../query'
+import { solution as solutionParam, start } from '../query'
 import type { MarkedWord, Solver } from '../types'
 
 /**
@@ -53,10 +53,12 @@ export function useInputs(answers: string[]): {
 	const [date, onDateChange] = useState<Date>(startOfYesterday())
 
 	// default to yesterday, and set that as the starting solution
+	// unless a word has been specified on the url
 	useEffect(() => {
+		const def = solutionParam()
 		const first = new Date('2021-06-16')
 		const index = differenceInDays(date, first)
-		onSolutionChange(answers[index])
+		onSolutionChange(def || answers[index])
 	}, [answers, date, onSolutionChange])
 
 	return {
@@ -90,7 +92,7 @@ export function useMarkedResults(
 			const marked = mark(guess, solution)
 			setTries(prev => [...prev, marked])
 			// this only returns words that are valid guesses given the current input
-			const filtered = filter(marked, guesses, tries)
+			const filtered = filter(guesses, marked, tries)
 			setRemaining(filtered)
 		}
 	}, [solution, guess, guesses, tries])

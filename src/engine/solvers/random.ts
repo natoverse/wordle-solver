@@ -13,6 +13,7 @@ import { mark } from '../mark'
 export const random: Solver = (answers, solution, start) => {
 	let matched = false
 	let guess = start || randomWord(answers)
+	let remaining = answers
 	const tries: MarkedWord[] = []
 
 	while (!matched) {
@@ -24,7 +25,7 @@ export const random: Solver = (answers, solution, start) => {
 		tries.push(marked)
 
 		// get a new list of allowed guesses, then choose the next guess
-		const remaining = filter(marked, answers, tries)
+		remaining = filter(remaining, marked, tries)
 		guess = randomWord(remaining)
 	}
 
