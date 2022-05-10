@@ -22,5 +22,5 @@ export interface MarkedWord {
 export type Solver = (
 	answers: RankedWord[],
 	solution: string,
-	start: string,
+	start?: string,
 ) => MarkedWord[]

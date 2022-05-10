@@ -6,7 +6,7 @@ import { random } from './random'
 import { scored } from './scored'
 export const solvers: Record<string, Solver> = {
 	Random: random,
-	First: first,
+	// First: first,
 	Popularity: popular,
 	Alphabetical: alphabetical,
 	Scored: scored,
