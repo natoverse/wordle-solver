@@ -88,11 +88,12 @@ function letterScored(words) {
 			}, {}),
 		).length
 
-		// reduce the scores by the number of duplicated letters
-		// these cause a loss of information
+		// reduce the scores by the number of duplicated letters: these cause a loss of information
 		const penalty = 6 - dupCount
-		const adjusted = score / penalty
-		const rounded = Math.round(adjusted * 100000) / 100000
+		const adjusted = (score / penalty)
+		// weight the letter-scored by word popularity, so weird words don't bubble up
+		const weighted = adjusted * word[1]
+		const rounded = Math.round(weighted * 100000) / 100000
 		return [...word, rounded]
 	})
 
