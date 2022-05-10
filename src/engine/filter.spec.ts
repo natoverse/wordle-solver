@@ -47,7 +47,7 @@ describe('filter based on word information matches', () => {
 
 	test('retain words with an Elsewhere mark', () => {
 		const guess = {
-			word: 'birds',
+			word: 'bards',
 			letters: [
 				{
 					letter: 'b',
@@ -65,12 +65,12 @@ describe('filter based on word information matches', () => {
 				},
 				{
 					letter: 'd',
-					mark: Mark.Elsewhere,
+					mark: Mark.Unset,
 				},
 				{
-					// should result in crust and stink remaining
+					// should result in crust and stirk remaining
 					letter: 's',
-					mark: Mark.Unset,
+					mark: Mark.Elsewhere,
 				},
 			],
 		}
@@ -79,14 +79,14 @@ describe('filter based on word information matches', () => {
 			{ word: 'crust', rank: 1 },
 			{ word: 'croak', rank: 1 },
 			{ word: 'awake', rank: 1 },
-			{ word: 'stink', rank: 1 },
+			{ word: 'stirk', rank: 1 },
 		]
 
 		const results = filter(inputs, guess)
 
 		expect(results).toEqual([
 			{ word: 'crust', rank: 1 },
-			{ word: 'stink', rank: 1 },
+			{ word: 'stirk', rank: 1 },
 		])
 	})
 	test.skip('use information from previous tries to exclude additional words', () => {

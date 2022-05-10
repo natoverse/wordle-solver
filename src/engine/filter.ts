@@ -13,8 +13,7 @@ export function filter(
 	marked: MarkedWord,
 	previous?: MarkedWord[],
 ): RankedWord[] {
-	const filtered = list.filter(word => validate(marked, word))
-
+	const filtered = list.filter(word => validate(word, marked))
 	// TODO: if a previous guess had a letter in an Elsewhere position,
 	// new guesses should not allow reusing that position
 	// TODO: if a previous guess had a None letter, words with that letter should be omitted

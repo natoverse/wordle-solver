@@ -8,7 +8,7 @@ import { Mark } from '../types'
  * 2) if any letter is Elsewhere, keep those words
  * 3) if any letter is None, exclude words containing it
  */
-export function validate(marked: MarkedWord, word: RankedWord): boolean {
+export function validate(word: RankedWord, marked: MarkedWord): boolean {
 	const wordLetters = word.word.split('')
 
 	// first only allow those words with Confirmed position matches
@@ -19,7 +19,6 @@ export function validate(marked: MarkedWord, word: RankedWord): boolean {
 		// we don't care about any others
 		return true
 	})
-
 	// still ok? check the Elsewhere letters
 	if (maybe) {
 		maybe = marked.letters.every((mark, index) => {
@@ -30,8 +29,6 @@ export function validate(marked: MarkedWord, word: RankedWord): boolean {
 						if (wordLetters[wordIndex] === mark.letter) {
 							return true
 						}
-					} else {
-						return true
 					}
 				}
 				return false
@@ -39,7 +36,6 @@ export function validate(marked: MarkedWord, word: RankedWord): boolean {
 			return true
 		})
 	}
-
 	// finally, cull any words that contain None letters
 	if (maybe) {
 		maybe = marked.letters.every((mark, index) => {
@@ -54,6 +50,5 @@ export function validate(marked: MarkedWord, word: RankedWord): boolean {
 			return true
 		})
 	}
-
 	return maybe
 }
