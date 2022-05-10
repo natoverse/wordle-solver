@@ -25,7 +25,7 @@ export const first: Solver = (answers, solution, start) => {
 
 		// get a new list of allowed guesses, then choose the next guess
 		remaining = filter(remaining, marked, tries)
-		guess = remaining[0].word
+		guess = remaining[0]?.word
 	}
 
 	return tries

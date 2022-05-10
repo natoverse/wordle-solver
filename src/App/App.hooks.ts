@@ -29,7 +29,6 @@ export function useData(): {
 			const aRaw = await csv('answers.csv')
 			const aRanked = aRaw.columns.map(word => ({ word, rank: 1 }))
 			setAnswers(aRanked)
-			console.log(aRanked)
 		}
 		f()
 	}, [])
@@ -106,10 +105,10 @@ export function useMarkedResults(
 
 	const doSolver = useCallback(
 		(solver: Solver) => {
-			const results = solver(answers, solution, guess)
+			const results = solver(guesses, solution, guess)
 			setTries(results)
 		},
-		[answers, solution, guess, setTries],
+		[guesses, solution, guess, setTries],
 	)
 
 	return {
