@@ -23,11 +23,12 @@ export function useData(): {
 			const g = await csv('guesses-ranked.csv', (d: any) => ({
 				...d,
 				rank: +d.rank,
+				score: +d.score,
 			}))
 			setGuesses(g as RankedWord[])
 
 			const aRaw = await csv('answers.csv')
-			const aRanked = aRaw.columns.map(word => ({ word, rank: 1 }))
+			const aRanked = aRaw.columns.map(word => ({ word, rank: 1, score: 1 }))
 			setAnswers(aRanked)
 		}
 		f()

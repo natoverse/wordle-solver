@@ -1,6 +1,7 @@
 export interface RankedWord {
 	word: string
-	rank: number
+	rank?: number
+	score?: number
 }
 export enum Mark {
 	Unset,
