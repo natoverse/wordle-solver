@@ -12,7 +12,7 @@ import { mark } from '../mark'
  */
 export const first: Solver = (answers, solution, start) => {
 	let matched = false
-	let guess = start || answers[0]
+	let guess = start || answers[0].word
 	let remaining = answers
 	const tries: MarkedWord[] = []
 	while (!matched) {
@@ -25,7 +25,7 @@ export const first: Solver = (answers, solution, start) => {
 
 		// get a new list of allowed guesses, then choose the next guess
 		remaining = filter(remaining, marked, tries)
-		guess = remaining[0]
+		guess = remaining[0].word
 	}
 
 	return tries

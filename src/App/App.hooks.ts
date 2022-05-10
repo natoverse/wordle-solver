@@ -5,26 +5,31 @@ import { useCallback, useEffect, useState } from 'react'
 import { filter } from '../engine/filter'
 import { mark } from '../engine/mark'
 import { solution as solutionParam, start } from '../query'
-import type { MarkedWord, Solver } from '../types'
+import type { MarkedWord, RankedWord, Solver } from '../types'
 
 /**
  * Loads all required word data files.
  * @returns
  */
 export function useData(): {
-	guesses: string[]
-	answers: string[]
+	guesses: RankedWord[]
+	answers: RankedWord[]
 } {
-	const [guesses, setGuesses] = useState<string[]>([])
-	const [answers, setAnswers] = useState<string[]>([])
+	const [guesses, setGuesses] = useState<RankedWord[]>([])
+	const [answers, setAnswers] = useState<RankedWord[]>([])
 
 	useEffect(() => {
 		const f = async () => {
-			const g = await csv('guesses.csv')
-			setGuesses(g.columns)
+			const g = await csv('guesses-ranked.csv', (d: any) => ({
+				...d,
+				rank: +d.rank,
+			}))
+			setGuesses(g as RankedWord[])
 
-			const a = await csv('answers.csv')
-			setAnswers(a.columns)
+			const aRaw = await csv('answers.csv')
+			const aRanked = aRaw.columns.map(word => ({ word, rank: 1 }))
+			setAnswers(aRanked)
+			console.log(aRanked)
 		}
 		f()
 	}, [])
@@ -39,7 +44,7 @@ export function useData(): {
  * @param answers
  * @returns
  */
-export function useInputs(answers: string[]): {
+export function useInputs(answers: RankedWord[]): {
 	solution: string
 	onSolutionChange: (update: string) => void
 	guess: string
@@ -55,10 +60,12 @@ export function useInputs(answers: string[]): {
 	// default to yesterday, and set that as the starting solution
 	// unless a word has been specified on the url
 	useEffect(() => {
-		const def = solutionParam()
-		const first = new Date('2021-06-16')
-		const index = differenceInDays(date, first)
-		onSolutionChange(def || answers[index])
+		if (answers.length > 0) {
+			const def = solutionParam()
+			const first = new Date('2021-06-16')
+			const index = differenceInDays(date, first)
+			onSolutionChange(def || answers[index].word)
+		}
 	}, [answers, date, onSolutionChange])
 
 	return {
@@ -74,15 +81,15 @@ export function useInputs(answers: string[]): {
 export function useMarkedResults(
 	guess: string,
 	solution: string,
-	answers: string[],
-	guesses: string[],
+	answers: RankedWord[],
+	guesses: RankedWord[],
 ): {
-	remaining: string[]
+	remaining: RankedWord[]
 	tries: MarkedWord[]
 	doTest: () => void
 	doSolver: (solver: Solver) => void
 } {
-	const [remaining, setRemaining] = useState<string[]>([])
+	const [remaining, setRemaining] = useState<RankedWord[]>([])
 	const [tries, setTries] = useState<MarkedWord[]>([])
 
 	useEffect(() => setRemaining(guesses), [guesses])

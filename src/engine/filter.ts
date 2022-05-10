@@ -1,4 +1,4 @@
-import type { MarkedWord } from '../types'
+import type { MarkedWord, RankedWord } from '../types'
 import { validate } from './validate'
 
 /**
@@ -9,10 +9,10 @@ import { validate } from './validate'
  * @returns
  */
 export function filter(
-	list: string[],
+	list: RankedWord[],
 	marked: MarkedWord,
 	previous?: MarkedWord[],
-): string[] {
+): RankedWord[] {
 	const filtered = list.filter(word => validate(marked, word))
 
 	// TODO: if a previous guess had a letter in an Elsewhere position,
@@ -20,7 +20,7 @@ export function filter(
 	// TODO: if a previous guess had a None letter, words with that letter should be omitted
 	if (previous) {
 		const pSet = new Set(previous.map(p => p.word))
-		return filtered.filter(word => !pSet.has(word))
+		return filtered.filter(word => !pSet.has(word.word))
 	}
 	return filtered
 }

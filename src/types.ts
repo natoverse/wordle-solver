@@ -1,3 +1,7 @@
+export interface RankedWord {
+	word: string
+	rank: number
+}
 export enum Mark {
 	Unset,
 	None,
@@ -15,7 +19,7 @@ export interface MarkedWord {
 }
 
 export type Solver = (
-	answers: string[],
+	answers: RankedWord[],
 	solution: string,
 	start: string,
 ) => MarkedWord[]

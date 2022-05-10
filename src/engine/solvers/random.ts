@@ -1,4 +1,4 @@
-import type { MarkedWord, Solver } from '../../types'
+import type { MarkedWord, RankedWord, Solver } from '../../types'
 import { filter } from '../filter'
 import { mark } from '../mark'
 
@@ -12,7 +12,7 @@ import { mark } from '../mark'
  */
 export const random: Solver = (answers, solution, start) => {
 	let matched = false
-	let guess = start || randomWord(answers)
+	let guess = start || randomWord(answers).word
 	let remaining = answers
 	const tries: MarkedWord[] = []
 
@@ -26,13 +26,13 @@ export const random: Solver = (answers, solution, start) => {
 
 		// get a new list of allowed guesses, then choose the next guess
 		remaining = filter(remaining, marked, tries)
-		guess = randomWord(remaining)
+		guess = randomWord(remaining).word
 	}
 
 	return tries
 }
 
-function randomWord(list: string[]): string {
+function randomWord(list: RankedWord[]): RankedWord {
 	const index = Math.floor(Math.random() * (list.length - 1))
 	return list[index]
 }

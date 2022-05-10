@@ -1,4 +1,4 @@
-import type { MarkedWord } from '../types'
+import type { MarkedWord, RankedWord } from '../types'
 import { Mark } from '../types'
 
 /**
@@ -8,8 +8,8 @@ import { Mark } from '../types'
  * 2) if any letter is Elsewhere, keep those words
  * 3) if any letter is None, exclude words containing it
  */
-export function validate(marked: MarkedWord, word: string): boolean {
-	const wordLetters = word.split('')
+export function validate(marked: MarkedWord, word: RankedWord): boolean {
+	const wordLetters = word.word.split('')
 
 	// first only allow those words with Confirmed position matches
 	let maybe = marked.letters.every((mark, index) => {

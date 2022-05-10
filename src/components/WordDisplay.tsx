@@ -1,11 +1,12 @@
 import type { FC } from 'react'
 import styled from 'styled-components'
 
+import type { RankedWord } from '../types'
 import { WordList } from './WordList'
 
 export interface WordDisplayProps {
 	title: string
-	words: string[]
+	words: RankedWord[]
 	onWordClick?: (word: string) => void
 }
 export const WordDisplay: FC<WordDisplayProps> = ({
@@ -27,7 +28,7 @@ export const WordDisplay: FC<WordDisplayProps> = ({
 
 const Container = styled.div`
 	height: 600px;
-	width: 200px;
+	width: 220px;
 	border: 1px solid ${({ theme }) => theme.application().border().hex()};
 `
 

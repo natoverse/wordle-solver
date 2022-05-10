@@ -29,11 +29,20 @@ describe('filter based on word information matches', () => {
 			],
 		}
 
-		const inputs = ['crust', 'croak', 'evade', 'awake', 'stink']
+		const inputs = [
+			{ word: 'crust', rank: 1 },
+			{ word: 'croak', rank: 1 },
+			{ word: 'evade', rank: 1 },
+			{ word: 'awake', rank: 1 },
+			{ word: 'stink', rank: 1 },
+		]
 
 		const results = filter(inputs, guess)
 
-		expect(results).toEqual(['crust', 'croak'])
+		expect(results).toEqual([
+			{ word: 'crust', rank: 1 },
+			{ word: 'croak', rank: 1 },
+		])
 	})
 
 	test('retain words with an Elsewhere mark', () => {
@@ -66,11 +75,19 @@ describe('filter based on word information matches', () => {
 			],
 		}
 
-		const inputs = ['crust', 'croak', 'awake', 'stink']
+		const inputs = [
+			{ word: 'crust', rank: 1 },
+			{ word: 'croak', rank: 1 },
+			{ word: 'awake', rank: 1 },
+			{ word: 'stink', rank: 1 },
+		]
 
 		const results = filter(inputs, guess)
 
-		expect(results).toEqual(['crust', 'stink'])
+		expect(results).toEqual([
+			{ word: 'crust', rank: 1 },
+			{ word: 'stink', rank: 1 },
+		])
 	})
 	test.skip('use information from previous tries to exclude additional words', () => {
 		const guess = {
@@ -128,10 +145,19 @@ describe('filter based on word information matches', () => {
 			},
 		]
 
-		const inputs = ['crust', 'croak', 'evade', 'awake', 'stink']
+		const inputs = [
+			{ word: 'crust', rank: 1 },
+			{ word: 'croak', rank: 1 },
+			{ word: 'evade', rank: 1 },
+			{ word: 'awake', rank: 1 },
+			{ word: 'stink', rank: 1 },
+		]
 
 		const results = filter(inputs, guess, previous)
 
-		expect(results).toEqual(['crust', 'croak'])
+		expect(results).toEqual([
+			{ word: 'crust', rank: 1 },
+			{ word: 'croak', rank: 1 },
+		])
 	})
 })
